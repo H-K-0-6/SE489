@@ -1,0 +1,757 @@
+1 | P a g e  
+ 
+University of Bahrain  
+College of Information Technology  
+Department of Computer Science  
+ITCS 489: Software Engineering I I 
+Sem# 2 2025/2026  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+E-COMMERCE WEBSITE FOR A LOCAL 
+ARTISAN COOPERATIVE  
+ 
+ 
+Supervised by. DR Taher Saleh  
+ 
+ 
+ Name  ID Section  
+Hussain Ali Kadhem 
+Kadhem  202302274  02 
+Hussain Yasser Ali  202304049  02 
+Hussain Jameel Moosa 
+Omran  202308929  02 
+Mohammed Abdulla 
+Hasan Alaswad  202310618  01 2 | P a g e  
+ Contents  
+Introduction  ................................ ................................ ................................ ...........................  3 
+Scenario  ................................ ................................ ................................ ................................  3 
+Literature Review  ................................ ................................ ................................ ...................  5 
+SDLC: DevOps  ................................ ................................ ................................ .......................  6 
+Stakeholders  ................................ ................................ ................................ .........................  8 
+Functional/Non -functional Requirements  ................................ ................................ ...............  9 
+Mapping requirements  ................................ ................................ ................................ .........  14 
+Context Diagram  ................................ ................................ ................................ ..................  16 
+Use Case Diagram  ................................ ................................ ................................ ...............  18 
+Class Diagram  ................................ ................................ ................................ .....................  20 
+Interface Design  ................................ ................................ ................................ ...................  23 
+Architecture of The System using MVC  ................................ ................................ ..................  25 
+Conclusion  ................................ ................................ ................................ ..........................  26 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 3 | P a g e  
+ Introduction  
+The rapid growth of digital platforms has significantly transformed the way individuals and 
+businesses interact, trade, and collaborate. In particular, e -commerce systems have become 
+essential tools for connecting sellers with a wider audience while offeri ng customers 
+convenient, secure, and efficient purchasing experiences. Alongside traditional online stores, 
+auction -based marketplaces have gained increasing popularity due to their ability to create 
+competitive pricing environments and enhance user engage ment. These technologies are 
+especially valuable for small -scale producers and artisan cooperatives seeking broader market 
+reach and sustainable business opportunities.  
+This project presents the design and analysis of an E-Commerce Website for a Local Artisan 
+Cooperative , developed to support both fixed -price product sales and real -time online 
+auctions. The system aims to provide a unified digital marketplace where customers can 
+browse products, place orders, participate in auctions, and track their purchases, while 
+artis ans can manage their shops, products, orders, and sales performance through dedicated 
+dashboards. The platform is designed to ensure security, usability, scalability, and compliance 
+with modern e -commerce standards, making it suitable for both local and in ternational users.  
+The report follows a Software Engineering  approach, applying the DevOps -based Software 
+Development Life Cycle (SDLC)  to emphasize continuous integration, continuous 
+deployment, and ongoing feedback. Security and compliance considerations are treated as 
+core concerns throughout every development phase, reflecting best practices in modern 
+system design. Functional, non -functional, business, and regulatory requirements are 
+systematically identified and mapped to ensure that the system satisfies stakeholder needs 
+while maintaining high performance and reliability.  
+By combining e -commerce functionalities, auction mechanisms, and cooperative values within 
+a single platform, this project demonstrates how software engineering principles can be 
+applied to build a robust, user -centric, and secure digital marketplace. The report documents 
+the system’s requirements, architecture, diagrams, and design decisions, providing a 
+comprehensive blueprint for the development of a real -world cooperative online marketplace.  
+ 
+Scenario  
+When a new customer visits the cooperative’s website, they can register by entering their full 
+name, a valid email address, and a secure password. The system ensures that the provided 
+email follows the correct format before completing registration, and all  passwords are safely 
+encrypted before being stored. Artisans, on the other hand, can create accounts by not only 
+submitting their email and password but also by providing shop details such as their biography, 
+profile picture, and shop name. Once registere d, both customers and artisans can log in to the 
+system using their credentials. For security and flexibility, the platform also offers logout 
+functionality and password recovery through email verification in case users forget their login 
+details.  4 | P a g e  
+ After logging in, customers are welcomed with access to the product catalogue, where they can 
+browse and search for products using keywords, artisan names, or product categories like  
+painting, jewellery, pottery, or textiles. Each product page displays clear details, including the 
+product name, description, price, multiple images, and artisan profile information. Customers 
+can add items they like to their shopping cart, review their cart, make a djustments such as 
+changing item quantities or removing product s, and instantly see the updated total cost. Once 
+ready to make a purchase, they follow a guided checkout process where they provide a 
+shipping address and payment details, after which the system generates an order confirmation 
+and sends a confirmation ema il to the customer. From their user account, customers can also 
+track the status of their orders — from pending to shipped and finally delivered.  
+Artisans experience the platform through a dedicated dashboard that allows them to manage 
+their profiles and products effectively. They can add new products with descriptions and 
+images, as well as edit or remove existing listings. When a customer places a n order, the 
+artisan receives a notification and is able to update the order’s status, ensuring customers are 
+aware of shipping progress. Alongside product management, artisans can also review their 
+complete sales history and examine performance reports to  understand their business growth.  
+The system manages all orders with unique identifiers, enabling both customers and artisans to 
+view detailed order histories. While relevant transaction details are stored to maintain accurate 
+records, sensitive payment data is never kept within the platfo rm. Payments are processed 
+securely through integrated payment gateways, and customers receive email confirmations 
+once payments are completed successfully.  
+For a more dynamic marketplace, artisans also have the option to list their products in 
+auctions. To create an auction, artisans provide details such as the product description, a 
+starting bid, and the auction’s start and end times. Customers can then plac e bids, with the 
+system enforcing that any new bid must be higher than the current highest one. The auction 
+interface displays the leading bid and bidder details in real time, and customers receive 
+notifications if they are outbid. At the scheduled end tim e, the auction closes automatically, 
+and both the winning bidder and artisan are notified. The winning customer is then guided to 
+complete the payment for the item. The marketplace separates fixed -price products from 
+active and upcoming auctions for easier  browsing.  
+To enhance user experience, the cooperative’s website includes extra features such as product 
+and artisan reviews, where customers can leave ratings and feedback. They can also create and 
+maintain personalized wishlists. For international reach, the platfo rm supports multiple 
+languages and currencies, making accessibility easier for customers worldwide. Finally, 
+administrators have access to a dedicated dashboard from which they can manage all platform 
+activities, including users, artisans, products, orders , and auctions, ensuring smooth and 
+secure operations for the entire cooperative.  
+ 5 | P a g e  
+ Literature Review  
+The literature review highlights several platforms that closely reflect the concept of an online 
+auction website for artworks, with each system offering a distinct model that can be leveraged.  
+ 
+eBay  is one of the most well -known platforms that relies on an open bidding system. It allows 
+users to list items and run auctions where buyers from around the world can place bids. The 
+platform is highly flexible and user -friendly, making it suitable for  a wide variety of products, 
+including artworks. It also provides useful features such as setting a starting price, defining 
+auction duration, and offering a “Buy It Now” option, giving sellers greater control over how they 
+present their items and maximize  sales opportunities.  
+ 
+In contrast,  Catawiki operates as a curated auction platform where listings are reviewed by 
+experts before being published. It focuses on unique items such as artworks and rare 
+collectibles, ensuring quality and authenticity. This approach builds trust am ong users and 
+attracts buyers who are specifically looking for distinctive and verified pieces, making it a strong 
+model for specialized art auction platforms.  
+ 
+On the other hand, Sotheby’s  represents a high -end and professional model in the art auction 
+industry. As a historic auction house, it combines traditional auction practices with modern 
+digital access, allowing users to participate in auctions both online and in person. The platform 
+focuses on premium, high -value artworks and offers advanced features such as live -streamed 
+auctions and professional art evaluations.  
+ 
+Together, these platforms demonstrate how auction systems can range from simple and 
+accessible to highly specialized and professional, while sharing the common goal of creating 
+competitive bidding environments, increasing the value of artworks, and connect ing sellers 
+with a global audience.  
+ 
+ 6 | P a g e  
+ SDLC: DevOps  
+ 
+The diagram presents the Software Development Life Cycle (SDLC) for the cooperative 
+marketplace platform using a DevOps model, illustrated as a linear pipeline of eight sequential 
+phases with a continuous feedback loop connecting the final phase back to th e first. A 
+                                              
+        
+                                           
+                                                                          
+           
+                                              
+                                                                                        
+              
+                                                      
+                                                                                       
+        
+                                                
+                                                                                      
+           
+                                                      
+                                                                                   
+               
+                                                 
+                                                                                 
+                     
+                                                 
+                                                                                    
+                      
+                                          
+                                                                                                     
+                                                          
+Continuous  feedback loop  
+Security & compliance (every phase)  7 | P a g e  
+ dedicated security and compliance track runs alongside every phase, reinforcing that security 
+is not a single checkpoint but an ongoing obligation throughout the entire development 
+process.  
+The first phase, Plan , captures all requirements engineering activities, including backlog 
+creation, epic definition, stakeholder sign -off, risk and security review, and sprint milestone 
+planning. This phase lays the foundation for the platform's domain areas, covering user 
+registration and authentication, product management, auction mechanics, order processing, 
+and the administrator dashboard.  
+The second phase, Develop , represents the coding and collaboration workflow. Developers 
+work on isolated Git feature branches, submit pull requests for peer review, and run static code 
+analysis and dependency vulnerability scans before any code is merged. This is particularly 
+impo rtant given the multi -role nature of the system, which includes customers, artisans, and 
+administrators with distinct access levels and permissions.  
+The third phase, Build (CI) , is the Continuous Integration stage, where every code merge 
+triggers an automated pipeline that compiles the application, runs linting and type checks, 
+executes unit and API tests, and produces a versioned Docker image stored in an artefact 
+registry. A b uild status badge provides immediate visibility into pipeline health.  
+The fourth phase, Test , encompasses a comprehensive quality assurance process. It includes 
+integration tests, end -to-end tests covering critical user journeys such as authentication and 
+checkout, dynamic application security testing (DAST) and penetration testing, load and 
+auct ion stress tests to validate the real -time bidding engine under high concurrency, and 
+accessibility testing to support the platform's multilingual and international audience.  
+The fifth phase, Release , acts as a formal gate before any code reaches production. It involves 
+promotion to a staging environment, an administrative approval gate, semantic versioning, the 
+generation of release notes and changelogs, and the preparation of a rollback plan in case  a 
+deployment needs to be reversed.  
+The sixth phase, Deploy (CD) , is the Continuous Delivery stage. The platform is deployed using 
+blue -green and canary release strategies to minimise downtime — a critical consideration for a 
+live auction system where interruptions would directly impact active bids. Infrastructure as 
+Code (IaC) manages environment provisioning, environment -specific configuration is injected 
+at runtime, and automated smoke tests verify the deployment immediately after it completes.  
+The seventh phase, Operate and Monitor , covers the live observability of the running system. It 
+includes centralised metrics collection and logging, uptime alerting, dedicated monitoring of 
+the auction engine, payment gateway log auditing, and an on -call rotation to ensure rapid 
+incident respo nse.  
+The eighth and final phase, Feedback and Iterate , closes the DevOps loop. User behaviour 
+analytics, bug and issue triage, sprint retrospectives, artisan and customer satisfaction scores 
+(NPS), and performance benchmarks are all collected and fed back into the planning phase, 
+driving continuous improveme nt across the platform.  8 | P a g e  
+ The dashed loop on the right side of the diagram represents this continuous feedback cycle, 
+visually reinforcing that DevOps is not a linear process that ends at deployment, but an 
+iterative, self -improving system. The dashed track on the left, labelled "S ecurity and 
+compliance (every phase)", underscores the platform's obligation to protect sensitive data — 
+including encrypted passwords, personally identifiable information, and payment transaction 
+records — throughout every stage of development and operati ons.  
+Stakeholder s 
+1. Customers  Registered users who browse the product catalogue, place orders, participate in 
+auctions, make payments, submit reviews, manage wishlists, and track order delivery status 
+through their accounts.  
+2. Artisans  Registered sellers who create and manage shop profiles, list fixed -price and auction 
+products, receive and update order statuses, view sales history, and monitor performance 
+reports through their dedicated dashboard.  
+3. System Administrators  Internal operators who oversee the entire platform through the 
+admin dashboard, managing users, artisans, products, orders, and auctions to ensure smooth, 
+secure, and compliant platform operations.  
+4. Authentication System  A technical stakeholder responsible for validating user credentials, 
+enforcing email format rules, encrypting and storing passwords securely, managing session 
+tokens, and supporting password recovery flows via email verification.  
+5. Email Service Provider  An external service that handles all outgoing platform emails, 
+including registration confirmations, order confirmations, payment receipts, password recovery 
+links, auction outbid notifications, and auction win notifications.  
+6. Payment Gateway  An external financial service that securely processes customer payments 
+at checkout and after auction wins, ensuring that no sensitive payment data is stored within the 
+platform itself.  
+7. Database System  A technical stakeholder responsible for persisting all platform data, 
+including user profiles, product listings, order records, auction bids, reviews, wishlists, and 
+transaction histories, while enforcing data integrity and access control.  
+8. Shipping Providers  External logistics partners who handle the physical delivery of purchased 
+products, supplying tracking information that feeds into the order status updates visible to both 
+customers and artisans.  
+9. Regulatory Authorities  External governmental and legal bodies whose data protection, 
+consumer rights, financial compliance, and e -commerce regulations the platform must adhere 
+to, particularly given its international and multi -currency reach.  
+10. Translation / Localisation Services  External or integrated services responsible for 
+translating platform content and adapting currency displays to support the multilingual and 
+multi -currency requirements of the platform's international customer base.  9 | P a g e  
+ 11. Non -registered Visitors  Unauthenticated users who can browse the public -facing areas of 
+the platform, such as the product catalogue and artisan profiles, but who cannot place orders, 
+bid in auctions, or access account -specific features without registering.  
+12. Developers / Maintenance Team  Internal technical staff responsible for building, testing, 
+deploying, and maintaining the platform, resolving bugs, releasing updates, monitoring system 
+health, and ensuring the reliability and security of all platform components over time.  
+Functional/Non -functional Requirements  
+1. Functional Requirements (FR)  
+• FR1 (User Registration):  The system shall provide two distinct sign -up forms: one for 
+Customers (Name, Email, Password) and one for Artisans (Email, Password, Shop 
+Name, 500 -character Bio, and Profile Image upload).  
+• FR2 (Email Validation):  The registration module must verify that email inputs contain 
+an "@" symbol and a valid domain extension before allowing form submission.  
+• FR3 (Authentication & Recovery):  The system shall implement session -based login 
+and a password reset feature that sends a unique, 15 -minute expiring link to the user’s 
+verified email.  
+• FR4 (Product Browsing):  The catalog shall support keyword search and filtering by four 
+predefined categories: Painting, Jewellery, Pottery, and Textiles.  
+• FR5 (Cart Management):  The cart shall calculate a running total of all items, including 
+quantity adjustments, and persist data for logged -in users for up to 30 days.  
+• FR6 (Order Processing):  Upon checkout completion, the system shall generate a 10 -
+digit unique Order ID and trigger an automated confirmation email within 60 seconds.  
+2. Non -Functional Requirements (NFR)  
+• NFR1 (Usability):  New users should be able to complete a purchase from the 
+homepage in 5 clicks or fewer without external assistance.  
+• NFR2 (Availability):  The platform shall maintain a 99.9% uptime, allowing no more than 
+43 minutes of unplanned downtime per month.  
+• NFR3 (Performance):  All pages must achieve a Largest Contentful Paint (LCP) of under 
+2.5 seconds on a standard 4G connection.  
+• NFR4 (Scalability):  The system must handle a 300% spike in traffic (up to 1,000 
+concurrent users) during holiday sales without a drop in response time.  
+• NFR5 (Data Security):  All user data at rest must be encrypted using AES -256 standards.  
+3. User Requirements (UR)  10 | P a g e  
+ • UR1 (Purchase Journey):  Customers require a "One -Click" add -to-cart feature directly 
+from search results to streamline the buying process.  
+• UR2 (Artisan Management):  Artisans require a visual "Sales Performance" chart on 
+their dashboard showing monthly revenue trends.  
+• UR3 (Secure Access):  Users require visual confirmation (e.g., a lock icon) and Multi -
+Factor Authentication (MFA) options for high -value transactions.  
+• UR4 (Order Tracking):  Customers require a real -time status bar (Pending > Shipped > 
+Delivered) accessible via their "My Orders" page.  
+• UR5 (Admin Control):  Administrators require the ability to "Shadow" or "Suspend" 
+accounts that violate the cooperative’s terms of service within two clicks.  
+4. System Requirements (SR)  
+• SR1 (Web Accessibility):  The system must be accessible via any modern browser 
+(Chrome, Firefox, Safari, Edge) and support screen readers (WCAG 2.1 Level AA 
+compliance).  
+• SR2 (Payment Integration):  The system shall integrate with external APIs 
+(Stripe/PayPal) to process Visa, Mastercard, and Amex payments.  
+• SR3 (Data Storage):  The system shall utilize a relational database (e.g., PostgreSQL) to 
+maintain ACID -compliant records of all transactions.  
+• SR4 (Notification Engine):  The system shall integrate with an SMTP server to deliver 
+100% of system -generated alerts to users' inboxes.  
+• SR5 (Concurrency):  The backend must support at least 200 simultaneous database 
+writes per second during high -volume auction bidding.  
+5. Business Requirements (BR)  
+• BR1 (Artisan Promotion):  The homepage must reserve at least 40% of its "Above the 
+Fold" space for rotating "Artisan of the Week" features.  
+• BR2 (Marketplace Trust):  The platform shall implement a "Verified Artisan" badge for 
+sellers who have successfully completed 50+ orders with a 4.5 -star rating.  
+• BR3 (Revenue Growth):  The system must support a 10% commission fee automatically 
+deducted from each non -auction sale to fund cooperative operations.  
+• BR4 (Global Reach):  The platform shall implement SEO -friendly URLs for all products 
+to increase organic search visibility by 20% annually.  
+• BR5 (Transaction Efficiency):  Total checkout time from "Cart" to "Confirmation" should 
+average less than 90 seconds for returning users.  
+6. Interface Requirements (IR)  11 | P a g e  
+ • IR1 (Web UI):  The interface shall use a consistent color palette and typography (Design 
+System) across both Customer and Artisan views.  
+• IR2 (Dashboards):  The Artisan Dashboard must provide a distinct "Inventory Low" alert 
+when product stock falls below 3 units.  
+• IR3 (Mobile Design):  The UI must be fully responsive, with all touch targets (buttons) 
+being at least 44x44 pixels on mobile devices.  
+• IR4 (Payment UI):  The payment interface must be hosted via a secure, PCI -compliant 
+iframe to ensure no sensitive card data is handled by the local UI.  
+• IR5 (Email UI):  All system emails must be formatted in responsive HTML/CSS to ensure 
+readability on both mobile and desktop mail clients.  
+7. Performance Requirements (PR)  
+• PR1 (Multi -User Support):  The system must support up to 5,000 registered users with 
+500 active sessions simultaneously.  
+• PR2 (Transaction Speed):  Payment gateway handshakes must be completed within 5 
+seconds for 99% of all transactions.  
+• PR3 (Search Latency):  Search results for a database of 10,000 products must be 
+returned in under 800ms.  
+• PR4 (Auction Real -Time):  Bid updates must be pushed to all active viewers via 
+WebSockets within 300ms of the bid being placed.  
+• PR5 (Peak Load):  During the final 5 minutes of an auction, the system shall prioritize bid 
+processing over non -essential page requests.  
+8. Security Requirements (SEC)  
+• SEC1 (Encryption):  All passwords must be hashed using the Argon2 or BCrypt algorithm 
+with a unique salt per user.  
+• SEC2 (Authorization):  The system shall use Role -Based Access Control (RBAC) to 
+ensure Artisans cannot access Admin dashboards or other Artisans' sales data.  
+• SEC3 (Zero -Storage Policy):  The platform must not store CVV codes or full Credit Card 
+Numbers in its local database or logs.  
+• SEC4 (Brute Force Protection):  The system shall lock any account for 30 minutes after 
+5 consecutive failed login attempts.  
+• SEC5 (HTTPS):  All data transmission must be forced over TLS 1.3 (HTTPS) with an A+ 
+rating on SSL Labs.  
+9. Regulatory / Compliance Requirements (CR)  12 | P a g e  
+ • CR1 (GDPR/Data Laws):  The system must include a "Cookie Consent" banner and a 
+"Right to be Forgotten" button within the user settings.  
+• CR2 (Privacy):  A clearly linked Privacy Policy must be accessible from every page 
+footer, detailing how user data is utilized.  
+• CR3 (PCI -DSS):  The system must comply with PCI -DSS Level 4 requirements for secure 
+online payment processing.  
+• CR4 (E -Commerce Standards):  The system shall provide automated digital tax invoices 
+for every purchase to comply with local trade regulations.  
+• CR5 (Audit Trails):  All financial transactions must be logged in a read -only audit file 
+accessible only by the System Administrator.  
+10. Operational Requirements (OR)  
+• OR1 (Maintenance):  Scheduled maintenance windows must be communicated to 
+users 24 hours in advance and occur during low -traffic hours (2 AM – 4 AM).  
+• OR2 (Backup):  The system shall perform full database backups every 24 hours and 
+transaction log backups every 15 minutes to an off -site cloud bucket.  
+• OR3 (Monitoring):  The system shall use an automated monitoring tool (e.g., 
+Datadog/New Relic) to alert admins via SMS if CPU usage exceeds 90%.  
+• OR4 (Support Logs):  The system must maintain a log of all customer support tickets 
+and their resolution times for quarterly review.  
+• OR5 (Recovery):  The Disaster Recovery Plan must guarantee a Recovery Point 
+Objective (RPO) of 15 minutes.  
+11. Domain Requirements (DR)  
+• DR1 (Categorization):  Every product uploaded by an artisan must be assigned to at 
+least one of the four domain -specific categories (Painting, Jewellery, Pottery, Textiles).  
+• DR2 (Auction Logic):  Auctions must have a mandatory "Start Price" and a "End 
+Timestamp" set at the time of creation.  
+• DR3 (Bid Validation):  The system shall reject any bid that does not exceed the current 
+highest bid by at least the "Minimum Increment" defined for that auction.  
+• DR4 (Order IDs):  Order identifiers must follow a standard prefix (e.g., COOP -2024 -
+XXXXX) for easy identification by the cooperative.  
+• DR5 (Multi -Currency):  The system shall update currency exchange rates via a third -
+party API every 12 hours.  
+12. Inverse Requirements (IRV)  13 | P a g e  
+ • IRV1 (Payment Storage):  The system shall not allow the local database to save raw 
+credit card data under any circumstances.  
+• IRV2 (Invalid Email):  The system shall not proceed with registration if the email 
+validation check returns a false or "disposable email" status.  
+• IRV3 (Illegal Bidding):  The system shall not accept a bid from the artisan who owns the 
+product being auctioned (shill bidding prevention).  
+• IRV4 (Cross -Account Access):  The system shall not allow a Customer to view the 
+"Artisan Dashboard" unless they have upgraded their account type.  
+• IRV5 (Data Deletion):  The system shall not allow the deletion of an order record if it is 
+currently in "Shipped" or "Pending" status.  
+13. Design Requirements (DRQ)  
+• DRQ1 (UI/UX):  The design shall use "High Contrast" settings (contrast ratio 4.5:1) for all 
+text to assist visually impaired users.  
+• DRQ2 (Architecture):  The system shall use a Microservices or Modular Monolith 
+architecture to allow the "Auction" module to be updated without taking down the 
+"Storefront."  
+• DRQ3 (Scalable Assets):  All images must be served in WebP format and automatically 
+resized based on the user's screen resolution.  
+• DRQ4 (Navigation):  The "Breadcrumb" navigation style must be present on all product 
+and auction pages to orient the user.  
+• DRQ5 (Layout):  The system must maintain a "Sticky Header" on desktop views to keep 
+the Search bar and Cart icon visible at all times.  
+14. Implementation Requirements (IRQ)  
+• IRQ1 (Coding Standards):  All code must pass a static analysis tool (e.g., SonarQube) 
+with zero "Critical" or "Blocker" vulnerabilities before deployment.  
+• IRQ2 (Database):  The database implementation must include "Foreign Key" constraints 
+to prevent orphaned order records.  
+• IRQ3 (API Integration):  External API calls must have a 10 -second timeout to prevent the 
+system from hanging if a third -party service is slow.  
+• IRQ4 (Data Encryption):  Personal Identifiable Information (PII) such as phone numbers 
+and addresses must be encrypted at the database column level.  
+• IRQ5 (Testing):  The system must undergo "Load Testing" to simulate 10,000 users and 
+"Penetration Testing" to identify security flaws before the official launch.  14 | P a g e  
+ Mapping requirements  
+i. The Artisan Management  
+• Profile Creation:  The system shall allow artisans to create a digital storefront by 
+submitting an email, password, shop name, and a text -based biography of up to 1,000 
+characters.  
+• Product Lifecycle:  Artisans must be able to add, edit, and delete product listings, 
+including a minimum of three high -resolution images and a numerical price field.  
+• Auction Configuration:  The system shall provide a dedicated interface for artisans to 
+set "Starting Bids" and "End Timestamps" for individual product auctions.  
+• Order Fulfillment:  Artisans shall have the functionality to update an order's status from 
+"Pending" to "Shipped" and "Delivered" via a one -click toggle in their dashboard.  
+ 
+ii. Shopping Management  
+• Catalog Search & Filter:  Customers must be able to filter search results by four 
+categories (Painting, Jewellery, Pottery, Textiles) with a response time of less than 
+800ms for 10,000 items.  
+• Cart Persistence:  The shopping cart must retain all added items and their specific 
+quantities for up to 30 days for logged -in users, recalculating the total cost instantly 
+upon any change.  
+• Real -Time Bidding:  The auction system must refresh the "Current Highest Bid" and 
+"Leading Bidder" details for all active viewers every 500ms using WebSocket 
+technology.  
+• Wishlist & Reviews:  Customers shall be able to save up to 50 items to a personal 
+wishlist and submit text -based reviews with a 1 -to-5-star numerical rating.  
+ 
+iii. Payment Process  
+• Third -Party Integration:  The system shall hand off all transaction data to an external, 
+PCI -compliant payment gateway (e.g., Stripe) without storing the customer's full credit 
+card number locally.  
+• Currency Conversion:  The platform must support real -time currency conversion based 
+on exchange rates updated every 12 hours via an external financial API.  
+• Automated Invoicing:  Within 60 seconds of a successful transaction, the system must 
+generate a PDF tax invoice and deliver it to the customer’s verified email address.  15 | P a g e  
+ • Payment Verification:  The system must reject any transaction where the billing 
+address does not match the payment method's authorization records.  
+ 
+iv. Reporting Management  
+• Sales History:  The system shall provide artisans with a searchable table of all past 
+sales, including date, item name, buyer ID, and final transaction amount.  
+• Performance Dashboards:  Artisans must have access to a visual line chart 
+representing their monthly revenue and a bar chart showing their "Most Viewed" 
+products.  
+• Admin Logs:  The system shall generate a daily report for administrators summarizing 
+total marketplace revenue, total new registrations, and active auction counts.  
+• Auction Summaries:  Upon the closing of an auction, the system must automatically 
+generate a "Winning Bid Report" sent to both the artisan and the successful bidder.  
+ 
+v. Security & System Administration (Added Functions)  
+• Role -Based Access Control (RBAC):  The system must restrict access so that Artisans 
+cannot view Admin dashboards and Customers cannot access Artisan -specific 
+management tools.  
+• Account Protection:  The system shall automatically lock any user account for 30 
+minutes following 5 consecutive failed login attempts.  
+• Administrative Oversight:  Administrators must be able to flag, suspend, or delete any 
+product listing or user account that violates cooperative policies within a single 
+"Manage" interface.  
+• Data Integrity & Recovery:  The system shall perform incremental database backups 
+every 6 hours with a guaranteed Recovery Time Objective (RTO) of under 2 hours in case 
+of system failure.  16 | P a g e  
+ Context Diag ram  
+ 
+ 
+This diagram is a Context Diagram (Level 0 Data Flow Diagram)  for the Cooperative Online 
+Marketplace System . It illustrates the high -level interactions between the core system and its 
+external entities, defining the boundaries and data flows of the platform.  
+ 
+Overview of Entities and Data Flows  
+1. Artisan (External Entity)  
+The Artisan is the primary provider of goods on the platform. The data flows between the Artisan 
+and the System include:  
+• Inbound to System:  The Artisan provides registration details, manages product listings 
+(creation/editing), initiates new auctions, and submits order status updates (e.g., 
+changing status to "shipped").  
+• Outbound from System:  The system provides the Artisan with essential information, 
+including product details, updates on active orders, auction alerts (such as new bids), 
+and system confirmations.  
+2. Customer (External Entity)  
+The Customer is the end -user purchasing goods. Their interactions are focused on the 
+storefront:  
+17 | P a g e  
+ • Inbound to System:  The Customer submits data for registration and login, executes 
+product searches, performs cart actions (add/remove), completes the checkout 
+process, places bids on auctions, and leaves reviews or wishlist updates.  
+• Outbound from System:  The "Receive Info" flow represents the system delivering 
+catalog data, order status tracking, bid results, and confirmation emails back to the 
+user.  
+3. Admin (External Entity)  
+The Admin represents the governing body of the cooperative, ensuring smooth operations:  
+• Inbound to System:  The Admin sends commands to manage the overall platform, 
+including user accounts, product moderation, order dispute resolution, and auction 
+oversight.  
+• Outbound from System:  The system provides the Admin with comprehensive sales 
+reports, system logs, and notification alerts regarding platform performance and 
+activity.  18 | P a g e  
+ Use Case Diagram  
+ 
+19 | P a g e  
+ This image is a Use Case Diagram  for the Artisan Cooperative System . It provides a high -level 
+view of the system's functional requirements by illustrating the interactions between different 
+types of users ( Actors ) and the specific tasks they perform ( Use Cases ). 
+ 
+Structure and Organization  
+1. Actors and Hierarchy  
+The diagram employs an inheritance model for the users:  
+• Base User:  A general actor representing shared functionality.  
+• Customer & Artisan:  These actors inherit from the "Base User," meaning they can 
+perform all the core authentication tasks in addition to their specific roles.  
+• Admin:  A specialized actor responsible for governance and oversight.  
+2. System Boundaries and Subsystems  
+The system is divided into four logical modules (subsystems) to organize functionality:  
+• Auth (Authentication):  
+o Covers essential entry/exit functions: Register , Login , Logout , and Recover 
+Password . 
+o Relationships:  Includes secondary processes like Encrypt Password  and 
+Validate Email , which are mandatory ( <<include>> ) steps during registration or 
+recovery.  
+• Shopping & Interaction (Customer Role):  
+o Focuses on the buyer's journey: Browse/Search , View Details , Manage Cart , 
+and Checkout . 
+o Includes engagement features such as Review & Wishlist  and Place Bid  (for 
+the auction system).  
+• Artisan Workshop (Artisan Role):  
+o Focuses on the seller's business operations: Manage Shop & Products , 
+Process Orders , and Manage Auctions . 
+o Provides business intelligence through Sales Reports . 
+• System Admin (Administrator Role):  
+o Focuses on platform maintenance and safety: User Management  and Site 
+Moderation . 20 | P a g e  
+ 
+o The Admin also maintains overarching access to the Base User functions to 
+manage accounts.  
+ 
+Class Diagram  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+a Class Diagram  for a Cooperative Online Marketplace System . It serves as a 
+technical blueprint for the software’s architecture, illustrating the objects, their data 
+(attributes), their behaviors (methods), and how they interact with one another.  
+Here is a breakdown of the diagram's core components:  
+ 
+1. The User Hierarchy (Inheritance)  
+At the top level is an Abstract Class User , which contains shared properties like userId , 
+email , and passwordHash . This class acts as a template for three specific roles:  21 | P a g e  
+ • Customer:  Focused on the shopping experience, with methods for browsing, searching, 
+placing orders, managing a wishlist, and placing bids.  
+• Artisan:  The seller role, responsible for managing a shop profile, listing products, 
+tracking sales, and creating auctions.  
+• Admin:  A governance role with elevated permissions to manage users, moderate 
+products, and oversee the entire platform’s health via a DashboardReport . 
+ 
+2. Product and Catalog Management  
+The system centers around the Product  class.  
+• Composition:  A product "owns" its ProductImages ; if a product is deleted, its images 
+are removed from the system.  
+• Categorization:  Products are grouped into a Category  (e.g., Pottery, Textiles) via an 
+aggregation relationship, allowing for organized browsing.  
+ 
+3. The Sales and Transaction Lifecycle  
+The diagram maps out a clear path from shopping to fulfillment:  
+• Shopping Cart:  Each Customer  owns one ShoppingCart , which contains multiple 
+CartItems . These items reference the Product  but exist independently within the cart.  
+• Orders:  Once a checkout is finalized, an Order  is generated. It links a Customer  to a 
+specific Address  and a Payment . The Order  contains OrderItems , which are snapshots 
+of the products purchased.  
+• Payments:  The system tracks payment through a Payment  class, which uses 
+PaymentDetails . Notably, the code includes a comment ensuring no sensitive card 
+data is stored on the platform, reflecting the security requirements.  
+ 
+4. Auction System  
+The diagram includes a specialized Auction  module:  
+• Auction  classes manage the lifecycle of a bidding event ( UPCOMING , ACTIVE , 
+CLOSED ). 
+• An auction receives multiple Bids , which are placed by Customers . 
+• The logic includes methods for accepting bids, validating that new bids are higher than 
+the current one, and notifying winners.  22 | P a g e  
+  
+5. Engagement and Localization  
+• Reviews:  Customers can write a Review  for a specific Product , creating a many -to-one 
+relationship between reviews and products.  
+• Notifications:  The system uses a Notification  class to alert users about order updates, 
+outbid alerts, or payment confirmations.  
+• Localization:  To support global reach, the system includes Language  and Currency  
+classes, allowing for dynamic translation and price conversion based on exchange 
+rates.  
+ 
+6. Relationship Summary  
+• Composition (Solid Diamonds):  Indicates strong ownership (e.g., an Order "owns" its 
+OrderItems).  
+• Aggregation (Hollow Diamonds):  Indicates a shared relationship (e.g., an Artisan "has" 
+Products, but the product could theoretically exist or be archived separately).  
+• Associations (Arrows):  Defines the flow of data, such as a Customer "placing" a Bid or 
+an Order "shipping to" an Address.  23 | P a g e  
+ Interface Design  
+ 
+24 | P a g e  
+ UI Design Analysis: Cooperative Online Marketplace  
+The provided interface showcases a high -fidelity landing page for an artisan -focused digital 
+marketplace. The design employs a modular, section -based layout that uses distinct color 
+blocking to guide the user through different functional zones of the platf orm.  
+1. Visual Hierarchy and Color Strategy  
+The design utilizes a bold, high -contrast palette to define different content areas:  
+• Hero and Header:  A clean, transparent navigation bar sits atop a large -scale artistic 
+banner. The primary call -to-action (CTA) is a high -visibility green button labeled "BET 
+NOW," emphasizing the auction aspect of the platform.  
+• Featured Art Section:  Set against a deep red background, this area uses white product 
+cards to create high legibility.  
+• Artist Directory:  A warm golden -orange background differentiates the "Top Artists" 
+section from product listings, shifting the focus from items to individuals.  
+• Recruitment Zone:  A cerulean blue block serves as a dedicated portal for new artisans, 
+utilizing a split -screen layout that balances text with high -detail photography of a 
+craftsperson.  
+2. Component Design and Functional Elements  
+The interface relies heavily on standardized "Card" components to present complex data 
+concisely:  
+• Auction Cards:  Each card features a "LIVE" status indicator, artisan attribution (avatar 
+and name), and real -time bidding data (number of bids, current price, and a countdown 
+timer). Interactive icons for "Like," "Cart," and "Quick View" are grouped at the top of the 
+image area.  
+• Artisan Profile Cards:  These emphasize the human element of the cooperative. They 
+include professional portraiture, the artisan’s name, their specialty, and integrated 
+social media links for further engagement.  
+• Navigation and Utilities:  The header contains standard e -commerce utilities, including 
+a search bar, shopping cart with a count indicator, and user authentication links 
+(Login/Register).  
+3. User Experience (UX) Considerations  
+• Clarity of Purpose:  By placing auction -specific data (current bid and time remaining) 
+directly on the product cards, the design reduces the cognitive load on the user, 
+allowing them to assess multiple auctions without leaving the main page.  25 | P a g e  
+ • Responsive Architecture:  The modular card -based system is inherently designed for 
+responsiveness, suggesting a seamless transition to mobile views where cards would 
+stack vertically.  
+• Conversion Optimization:  Clear, bordered buttons like "Learn More" and "Join Now" 
+provide unmistakable pathways for both customers and potential artisans to move 
+deeper into the system.  
+4. Information Architecture  
+The page follows a logical "AIDA" (Attention, Interest, Desire, Action) marketing funnel:  
+1. Attention:  Large -scale art in the Hero section.  
+2. Interest:  Featured live auctions and new arrivals.  
+3. Desire:  Building trust through the "Top Artists" profiles.  
+4. Action:  The "Become an Artisan" recruitment section at the bottom.  
+ 
+The interface successfully merges a commercial auction environment with a community -driven 
+cooperative feel. The use of vibrant color blocking prevents the long -scrolling page from feeling 
+repetitive, while the consistent card typography ensures that techn ical data—such as bid 
+amounts and timers —remains the focal point of the marketplace experience.  
+Architecture  of The System using MVC  
+ 
+This diagram illustrates the MVC (Model -View -Controller) Architectural Pattern  tailored for 
+the Cooperative Marketplace system. It defines the high -level organization of the platform into 
+three specialized layers to ensure a clean separation of concerns:  
+1. View Layer (UI Screens)  
+26 | P a g e  
+ This layer represents the User Interface . It contains specific screens such as the AuctionView , 
+ProductCatalogView , and ShoppingCartView . It is responsible for presenting data to the user 
+and is noted as being "viewed by the actor."  
+2. Controller Layer (Logic Handlers)  
+Acting as the system's "brain," this layer handles user input and orchestrates the flow of the 
+application. It includes specialized controllers like the AuctionController  and AuthController . 
+As indicated by the "receives actor events"  note, it intercepts actions from the user (such as 
+placing a bid) and determines the appropriate response.  
+3. Model Layer (Data & Entities)  
+This layer manages the business logic and data  of the marketplace. It groups related entities 
+from the class diagram —such as User/Artisan , Product/Category , and Auction/Bid . It maintains 
+the state of the system and ensures data integrity.  
+ 
+Core Interaction Flow:  
+• Action : The User/Actor  triggers events that the Controller  receives.  
+• Logic : The Controller  sends a command to modify  the Model  (e.g., saving a new bid).  
+• Update : The Controller  coordinates the UI by creating and updating  the View . 
+• Feedback : The Model  ensures the UI remains accurate by notifying the View  about 
+state changes (e.g., updating the highest bid in real -time).  
+ 
+Conclusion  
+This project presented the design and analysis of an E-Commerce Website for a Local Artisan 
+Cooperative , aiming to create a secure, scalable, and user -centric digital marketplace that 
+supports both fixed -price sales and real -time auctions. By integrating e -commerce 
+functionalities with auction mechanisms, the proposed system demonstrates how modern 
+digital platforms can empower artisan communities to expand their market reach, increase 
+engagement with customers, and operate more efficiently in a competitive online environment.  
+Through the application of a DevOps -based Software Development Life Cycle (SDLC) , the 
+report highlighted the importance of continuous integration, continuous deployment, and 
+continuous feedback in delivering reliable and high -quality software. Security and compliance 
+were emphasized throughout all phases of development, ensuring the p rotection of sensitive 
+user data, safe payment processing, and adherence to relevant regulatory requirements. 
+Detailed functional, non -functional, business, and security requirements were identified and 
+mapped to system components, ensuring that stakeholde r needs were addressed in a 
+structured and traceable manner.  27 | P a g e  
+ The system design was supported by comprehensive models and diagrams, including context 
+diagrams, use case diagrams, class diagrams, and an MVC architectural model. These artifacts 
+provided a clear blueprint for system implementation and demonstrated how r esponsibilities 
+are effectively separated to enhance maintainability, scalability, and performance. Additional 
+features such as multilingual support, multi -currency handling, performance dashboards, and 
+real -time auction updates further enhance user experi ence and operational efficiency.  
+In conclusion, this project illustrates the practical application of software engineering 
+principles to a real -world problem, delivering a robust and extensible solution for 
+cooperative -based online commerce. The proposed platform not only meets technical and 
+business requirements but also promotes trust, transparency, and long -term sustainability for 
+local artisans. Future enhancements may include advanced analytics  and mobile application 
+support  further strengthening the platform’s ability to adapt and grow in an evolving digital 
+marketplace.  
+ 
+ 

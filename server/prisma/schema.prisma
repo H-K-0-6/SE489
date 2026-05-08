@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  passwordHash    String
+  role            String    @default("CUSTOMER") // CUSTOMER, ARTISAN, ADMIN
+  name            String
+  failedAttempts  Int       @default(0)
+  lockoutUntil    DateTime?
+  createdAt       DateTime  @default(now())
+  
+  profile         Profile?
+  bids            Bid[]
+  orders          Order[]
+  reviews         Review[]
+  auctionsCreated Auction[]
+  products        Product[]
+  wishlist        Wishlist[]
+  cart            Cart?
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  bio         String? 
+  shopName    String?
+  avatarUrl   String?
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  category    String    // painting, jewellery, pottery, textiles
+  price       Float
+  stock       Int       @default(0)
+  views       Int       @default(0)
+  images      String    // JSON string array of URLs
+  artisanId   String
+  artisan     User      @relation(fields: [artisanId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+
+  reviews     Review[]
+  orderItems  OrderItem[]
+  wishlistedBy Wishlist[]
+  cartItems   CartItem[]
+}
+
+model Auction {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  category        String
+  startingPrice   Float
+  currentBid      Float
+  status          String   @default("UPCOMING") // UPCOMING, ACTIVE, CLOSED
+  startTime       DateTime
+  endTime         DateTime
+  artisanId       String
+  artisan         User     @relation(fields: [artisanId], references: [id], onDelete: Cascade)
+  images          String   // JSON string array of URLs
+  createdAt       DateTime @default(now())
+
+  bids            Bid[]
+  winnerId        String?
+}
+
+model Bid {
+  id          String   @id @default(uuid())
+  amount      Float
+  timestamp   DateTime @default(now())
+  auctionId   String
+  auction     Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id          String   @id // e.g. COOP-2024-XXXXX
+  total       Float
+  status      String   @default("PENDING") // PENDING, SHIPPED, DELIVERED
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  quantity    Int
+  priceAtBuy  Float
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  rating      Int
+  comment     String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
+
+model Wishlist {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int      @default(1)
+  
+  @@unique([cartId, productId])
+}
