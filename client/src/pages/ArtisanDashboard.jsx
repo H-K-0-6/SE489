@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { Package, DollarSign, Eye, TrendingUp, Plus } from 'lucide-react';
+import { Package, DollarSign, Eye, TrendingUp, Plus, Printer } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 function ArtisanDashboard() {
@@ -106,11 +106,84 @@ function ArtisanDashboard() {
 
   return (
     <div className="container" style={{ padding: '4rem 24px' }}>
+      <style>{`
+        @media print {
+          .navbar, .btn, .no-print, form, .image-upload-section {
+            display: none !important;
+          }
+          body, html, #root {
+            background-color: white !important;
+            background-image: none !important;
+            color: #111 !important;
+          }
+          .container {
+            padding: 20px !important;
+            max-width: 100% !important;
+            width: 100% !important;
+          }
+          .glass-panel {
+            background: white !important;
+            border: 1px solid #ddd !important;
+            box-shadow: none !important;
+            border-radius: 8px !important;
+            padding: 20px !important;
+            page-break-inside: avoid;
+            margin-bottom: 20px !important;
+          }
+          .grid {
+            display: flex !important;
+            flex-direction: column !important;
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+          }
+          h1, h2, h3, p, div, span, th, td {
+            color: #111 !important;
+            text-shadow: none !important;
+          }
+          svg text {
+            fill: #444 !important;
+          }
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          table {
+            width: 100% !important;
+            border: 1px solid #eee !important;
+          }
+          th, td {
+            border-bottom: 1px solid #eee !important;
+            color: #222 !important;
+          }
+          select {
+            appearance: none !important;
+            border: none !important;
+            background: transparent !important;
+            padding: 0 !important;
+            font-weight: bold !important;
+            color: #222 !important;
+          }
+          .recharts-cartesian-grid-horizontal line,
+          .recharts-cartesian-grid-vertical line {
+            stroke: #ddd !important;
+          }
+        }
+      `}</style>
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '3rem', margin: 0 }}>Artisan Dashboard</h1>
-        <button className="btn btn-recruitment" onClick={() => setShowAddProduct(!showAddProduct)}>
-          <Plus size={20} /> Add Product
-        </button>
+        <div style={{ display: 'flex', gap: '12px' }} className="no-print">
+          <button 
+            className="btn btn-outline" 
+            onClick={() => window.print()}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)' }}
+          >
+            <Printer size={18} /> Print Report
+          </button>
+          <button className="btn btn-recruitment" onClick={() => setShowAddProduct(!showAddProduct)}>
+            <Plus size={20} /> Add Product
+          </button>
+        </div>
       </div>
 
       {showAddProduct && (

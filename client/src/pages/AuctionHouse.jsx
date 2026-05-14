@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Gavel, Clock, Heart, Eye, Search } from 'lucide-react'
+import { Gavel, Clock, Heart, Eye, Search, Tag, History, X } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
 
@@ -66,7 +66,7 @@ const AuctionCard = ({ auction, onBid }) => {
 
         <div className="card-artisan">
           <img src={auction.artisan?.profile?.avatarUrl || 'https://via.placeholder.com/40'} alt="avatar" className="artisan-avatar" style={{ width: '24px', height: '24px', borderWidth: '1px' }} />
-          <span style={{ fontSize: '0.85rem', color: 'var(--color-text)' }}>By {auction.artisan?.name}</span>
+          <span style={{ fontSize: '0.85rem', color: 'var(--color-text)' }}>By {auction.artisan?.name || 'Unknown Artisan'}</span>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 'auto', marginBottom: '20px', padding: '16px', background: 'rgba(0,0,0,0.2)', borderRadius: '12px' }}>
@@ -114,6 +114,26 @@ function AuctionHouse() {
 
   const [searchInput, setSearchInput] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchHistory, setSearchHistory] = useState(JSON.parse(localStorage.getItem('auctionSearchHistory') || '[]'))
+  const [showDropdown, setShowDropdown] = useState(false)
+  const searchRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const removeFromHistory = (e, term) => {
+    e.stopPropagation();
+    const updated = searchHistory.filter(h => h !== term);
+    setSearchHistory(updated);
+    localStorage.setItem('auctionSearchHistory', JSON.stringify(updated));
+  }
   useEffect(() => {
     let url = 'http://localhost:3001/api/auctions'
     if (searchQuery) {
@@ -159,9 +179,35 @@ function AuctionHouse() {
   }
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     setSearchQuery(searchInput);
+    if (searchInput.trim()) {
+      const updated = [searchInput.trim(), ...searchHistory.filter(h => h !== searchInput.trim())].slice(0, 5);
+      setSearchHistory(updated);
+      localStorage.setItem('auctionSearchHistory', JSON.stringify(updated));
+    }
+    setShowDropdown(false);
   }
+
+  const selectSuggestion = (val) => {
+    setSearchInput(val);
+    setSearchQuery(val);
+    if (val.trim()) {
+      const updated = [val.trim(), ...searchHistory.filter(h => h !== val.trim())].slice(0, 5);
+      setSearchHistory(updated);
+      localStorage.setItem('auctionSearchHistory', JSON.stringify(updated));
+    }
+    setShowDropdown(false);
+  }
+
+  const categories = [...new Set(auctions.map(a => a.category))];
+  const categorySuggestions = searchInput.length > 0 
+    ? categories.filter(cat => cat.toLowerCase().includes(searchInput.toLowerCase())).slice(0, 3)
+    : [];
+  
+  const historyToShow = searchInput.length > 0
+    ? searchHistory.filter(h => h.toLowerCase().includes(searchInput.toLowerCase())).slice(0, 3)
+    : searchHistory.slice(0, 5);
 
   return (
     <div className="container" style={{ padding: '4rem 24px' }}>
@@ -169,25 +215,114 @@ function AuctionHouse() {
         <h1 style={{ fontSize: '4rem', marginBottom: '16px' }}>Auction House</h1>
         <p style={{ color: 'var(--color-text)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto', marginBottom: '2rem' }}>Experience the thrill of real-time bidding on exclusive, one-of-a-kind masterpieces.</p>
 
-        <form onSubmit={handleSearchSubmit} style={{ maxWidth: '400px', margin: '0 auto', position: 'relative' }}>
-          <input
-            type="text"
-            placeholder="Search auctions by title..."
-            className="search-bar"
-            style={{ width: '100%', padding: '1rem 1rem 1rem 3rem', borderRadius: '30px' }}
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
-          <button type="submit" style={{ position: 'absolute', left: '16px', top: '16px', background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
-            <Search size={20} style={{ color: '#888' }} />
-          </button>
-        </form>
+        <div ref={searchRef} style={{ maxWidth: '500px', margin: '0 auto', position: 'relative', zIndex: 50 }}>
+          <form onSubmit={handleSearchSubmit} style={{ position: 'relative' }}>
+            <input
+              type="text"
+              placeholder="Search auctions by title..."
+              className="search-bar"
+              style={{ 
+                width: '100%', 
+                padding: '1.2rem 1.2rem 1.2rem 3.5rem', 
+                borderRadius: '30px', 
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid var(--glass-border)',
+                color: 'white',
+                fontSize: '1.1rem',
+                transition: 'all 0.3s ease'
+              }}
+              value={searchInput}
+              onChange={(e) => {
+                setSearchInput(e.target.value);
+                setShowDropdown(true);
+              }}
+              onFocus={() => setShowDropdown(true)}
+            />
+            <button type="submit" style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
+              <Search size={22} style={{ color: 'rgba(255,255,255,0.6)' }} />
+            </button>
+          </form>
+
+          {showDropdown && (historyToShow.length > 0 || categorySuggestions.length > 0) && (
+            <div style={{
+              position: 'absolute',
+              top: 'calc(100% + 10px)',
+              left: 0,
+              right: 0,
+              background: 'rgba(30, 30, 35, 0.95)',
+              backdropFilter: 'blur(15px)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '16px',
+              padding: '12px 0',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+              animation: 'fadeIn 0.2s ease-out',
+              textAlign: 'left'
+            }}>
+              {categorySuggestions.length > 0 && (
+                <div style={{ padding: '4px 0' }}>
+                  <div style={{ padding: '6px 16px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-directory)', opacity: 0.8 }}>Suggested Categories</div>
+                  {categorySuggestions.map(cat => (
+                    <div 
+                      key={cat} 
+                      onClick={() => selectSuggestion(cat)}
+                      style={{ padding: '10px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px', color: 'white', transition: 'background 0.2s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <Tag size={16} style={{ color: '#888' }} />
+                      <span>{cat}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {categorySuggestions.length > 0 && historyToShow.length > 0 && <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '8px 0' }}></div>}
+
+              {historyToShow.length > 0 && (
+                <div style={{ padding: '4px 0' }}>
+                  <div style={{ padding: '6px 16px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: '#888' }}>Recent Searches</div>
+                  {historyToShow.map((term, i) => (
+                    <div 
+                      key={i} 
+                      onClick={() => selectSuggestion(term)}
+                      style={{ padding: '10px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'white', transition: 'background 0.2s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <History size={16} style={{ color: '#666' }} />
+                        <span>{term}</span>
+                      </div>
+                      <button 
+                        onClick={(e) => removeFromHistory(e, term)}
+                        style={{ background: 'none', border: 'none', padding: '4px', cursor: 'pointer', color: '#666', display: 'flex', alignItems: 'center', transition: 'color 0.2s' }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = 'white'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = '#666'}
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="grid">
-        {auctions
-          .filter(auction => new Date(auction.endTime) > new Date() && auction.status === 'ACTIVE')
-          .map(auction => <AuctionCard key={auction.id} auction={auction} onBid={handleBid} />)}
+      <div className={auctions.filter(auction => new Date(auction.endTime) > new Date() && auction.status === 'ACTIVE').length > 0 ? "grid" : ""}>
+        {(() => {
+          const filtered = auctions.filter(auction => new Date(auction.endTime) > new Date() && auction.status === 'ACTIVE');
+          if (filtered.length === 0) {
+            return (
+              <div style={{ textAlign: 'center', padding: '3rem', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', border: '1px dashed rgba(255,255,255,0.1)' }}>
+                <h3 style={{ marginBottom: '0.5rem' }}>No live auctions found</h3>
+                <p style={{ color: 'var(--color-text)', opacity: 0.7 }}>Check back soon for exclusive masterpieces available for bidding.</p>
+              </div>
+            )
+          }
+          return filtered.map(auction => <AuctionCard key={auction.id} auction={auction} onBid={handleBid} />);
+        })()}
       </div>
     </div>
   )
