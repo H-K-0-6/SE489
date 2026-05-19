@@ -317,7 +317,7 @@ function Catalog() {
                   <span style={{ fontSize: '0.85rem', color: 'var(--color-text)' }}>By {product.artisan?.name}</span>
                 </div>
                 
-                <div className="card-price">${product.price}</div>
+                <div className="card-price">BD {product.price}</div>
                 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.85rem', color: product.stock < 3 ? 'var(--color-featured)' : 'var(--color-text)', fontWeight: '600' }}>

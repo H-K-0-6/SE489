@@ -3,6 +3,15 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Package, DollarSign, Eye, TrendingUp, Plus, Printer } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+function getRemainingTime(endTime) {
+  const total = Date.parse(endTime) - Date.parse(new Date());
+  if (total <= 0) return 'Ended';
+  const hours = Math.floor((total / (1000 * 60 * 60)));
+  const minutes = Math.floor((total / 1000 / 60) % 60);
+  const seconds = Math.floor((total / 1000) % 60);
+  return `${hours}h ${minutes}m ${seconds}s`;
+}
+
 function ArtisanDashboard() {
   const [data, setData] = useState(null);
   const [showAddProduct, setShowAddProduct] = useState(false);
@@ -10,7 +19,18 @@ function ArtisanDashboard() {
   const [listingType, setListingType] = useState('catalog');
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imageError, setImageError] = useState('');
+  
+  // Display Lists State
+  const [showAllProducts, setShowAllProducts] = useState(false);
+  const [showAllAuctions, setShowAllAuctions] = useState(false);
+  const [now, setNow] = useState(Date.now());
+  
   const { user } = useAuth();
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     fetchDashboardData();
@@ -108,8 +128,11 @@ function ArtisanDashboard() {
     <div className="container" style={{ padding: '4rem 24px' }}>
       <style>{`
         @media print {
-          .navbar, .btn, .no-print, form, .image-upload-section {
+          .navbar, .btn, .no-print, form, .image-upload-section, .hide-on-print {
             display: none !important;
+          }
+          .print-only-row {
+            display: table-row !important;
           }
           body, html, #root {
             background-color: white !important;
@@ -257,7 +280,7 @@ function ArtisanDashboard() {
           <div>
             <div style={{ color: 'var(--color-text)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Revenue</div>
             <div style={{ fontSize: '2rem', fontWeight: '800', color: 'white' }}>
-              ${data.sales?.reduce((sum, sale) => sum + (sale.priceAtBuy * sale.quantity), 0) || 0}
+              BD {data.sales?.reduce((sum, sale) => sum + (sale.priceAtBuy * sale.quantity), 0) || 0}
             </div>
           </div>
         </div>
@@ -325,7 +348,7 @@ function ArtisanDashboard() {
         </div>
       </div>
 
-      <div className="glass-panel" style={{ padding: '30px' }}>
+      <div className="glass-panel" style={{ padding: '30px', marginBottom: '3rem' }}>
         <h3 style={{ marginBottom: '20px' }}>Recent Orders</h3>
         {data.sales && data.sales.length > 0 ? (
           <table style={{ width: '100%', borderCollapse: 'collapse', color: 'white' }}>
@@ -344,7 +367,7 @@ function ArtisanDashboard() {
                   <td style={{ padding: '16px 12px', fontWeight: 'bold' }}>{sale.order.id}</td>
                   <td style={{ padding: '16px 12px' }}>{sale.product.name}</td>
                   <td style={{ padding: '16px 12px' }}>{sale.quantity}</td>
-                  <td style={{ padding: '16px 12px', color: 'var(--color-directory)' }}>${sale.priceAtBuy * sale.quantity}</td>
+                  <td style={{ padding: '16px 12px', color: 'var(--color-directory)' }}>BD {sale.priceAtBuy * sale.quantity}</td>
                   <td style={{ padding: '16px 12px' }}>
                     <select
                       value={sale.order.status}
@@ -390,6 +413,87 @@ function ArtisanDashboard() {
             </tbody>
           </table>
         ) : <p>No recent orders.</p>}
+      </div>
+
+      {/* New Feature: Currently Listed Products & Active Auctions */}
+      <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '3rem' }}>
+        {/* Products List */}
+        <div className="glass-panel" style={{ padding: '30px' }}>
+          <h3 style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            Listed Products
+            {data.products && data.products.length > 5 && (
+              <button 
+                className="hide-on-print"
+                onClick={() => setShowAllProducts(!showAllProducts)}
+                style={{ background: 'none', border: 'none', color: 'var(--color-directory)', cursor: 'pointer', fontSize: '0.9rem' }}
+              >
+                {showAllProducts ? 'Show Less' : 'Show All'}
+              </button>
+            )}
+          </h3>
+          {data.products && data.products.length > 0 ? (
+            <table style={{ width: '100%', borderCollapse: 'collapse', color: 'white', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--color-text)' }}>
+                  <th style={{ padding: '12px', width: '60%' }}>Name</th>
+                  <th style={{ padding: '12px', width: '20%' }}>Price</th>
+                  <th style={{ padding: '12px', width: '20%', textAlign: 'right' }}>Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.products.map((product, idx) => {
+                  const isHidden = !showAllProducts && idx >= 5;
+                  return (
+                    <tr key={product.id} className={isHidden ? 'print-only-row' : ''} style={{ display: isHidden ? 'none' : 'table-row', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={{ padding: '16px 12px' }}>{product.name}</td>
+                      <td style={{ padding: '16px 12px', color: 'var(--color-directory)' }}>BD {product.price}</td>
+                      <td style={{ padding: '16px 12px', textAlign: 'right' }}>{product.stock}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          ) : <p>No products listed.</p>}
+        </div>
+
+        {/* Active Auctions List */}
+        <div className="glass-panel" style={{ padding: '30px' }}>
+          <h3 style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            Active Auctions
+            {data.auctions && data.auctions.length > 5 && (
+              <button 
+                className="hide-on-print"
+                onClick={() => setShowAllAuctions(!showAllAuctions)}
+                style={{ background: 'none', border: 'none', color: 'var(--color-recruitment)', cursor: 'pointer', fontSize: '0.9rem' }}
+              >
+                {showAllAuctions ? 'Show Less' : 'Show All'}
+              </button>
+            )}
+          </h3>
+          {data.auctions && data.auctions.length > 0 ? (
+            <table style={{ width: '100%', borderCollapse: 'collapse', color: 'white', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--color-text)' }}>
+                  <th style={{ padding: '12px', width: '50%' }}>Title</th>
+                  <th style={{ padding: '12px', width: '25%' }}>Current Bid</th>
+                  <th style={{ padding: '12px', width: '25%', textAlign: 'right' }}>Time Left</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.auctions.map((auction, idx) => {
+                  const isHidden = !showAllAuctions && idx >= 5;
+                  return (
+                    <tr key={auction.id} className={isHidden ? 'print-only-row' : ''} style={{ display: isHidden ? 'none' : 'table-row', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={{ padding: '16px 12px' }}>{auction.title}</td>
+                      <td style={{ padding: '16px 12px', color: 'var(--color-directory)' }}>BD {auction.currentBid}</td>
+                      <td style={{ padding: '16px 12px', color: 'var(--color-featured)', textAlign: 'right' }}>{getRemainingTime(auction.endTime)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          ) : <p>No active auctions.</p>}
+        </div>
       </div>
     </div>
   );

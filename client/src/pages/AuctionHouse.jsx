@@ -72,7 +72,7 @@ const AuctionCard = ({ auction, onBid }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 'auto', marginBottom: '20px', padding: '16px', background: 'rgba(0,0,0,0.2)', borderRadius: '12px' }}>
           <div>
             <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-text)', letterSpacing: '1px' }}>Current Bid</div>
-            <div style={{ fontSize: '2rem', fontWeight: '800', fontFamily: 'Playfair Display', color: 'var(--color-directory)', lineHeight: 1 }}>${auction.currentBid}</div>
+            <div style={{ fontSize: '2rem', fontWeight: '800', fontFamily: 'Playfair Display', color: 'var(--color-directory)', lineHeight: 1 }}>BD {auction.currentBid}</div>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-text)', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'flex-end' }}><Clock size={14} /> Time Left</div>

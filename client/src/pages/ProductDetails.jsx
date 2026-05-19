@@ -140,7 +140,7 @@ function ProductDetails() {
           </div>
           <h1 style={{ fontSize: '3rem', marginBottom: '20px', lineHeight: '1.2' }}>{product.name}</h1>
           <div style={{ fontSize: '3rem', fontWeight: '800', fontFamily: 'Playfair Display', color: 'var(--color-directory)', marginBottom: '20px', lineHeight: 1 }}>
-            ${product.price}
+            BD {product.price}
           </div>
           <p style={{ color: 'var(--color-text)', fontSize: '1.1rem', marginBottom: '30px', lineHeight: '1.8' }}>
             {product.description}

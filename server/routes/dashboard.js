@@ -69,10 +69,22 @@ router.get('/artisan/:artisanId', async (req, res) => {
 
     const chartData = Object.keys(monthlyRevenue).map(key => ({ name: key, revenue: monthlyRevenue[key] }));
 
+    // Fetch all products
+    const products = await prisma.product.findMany({
+      where: { artisanId }
+    });
+
+    // Fetch all active auctions
+    const auctions = await prisma.auction.findMany({
+      where: { artisanId, status: 'ACTIVE' }
+    });
+
     res.json({
       topProducts,
       sales,
-      chartData: chartData.length ? chartData : [{ name: 'Current Month', revenue: 0 }]
+      chartData: chartData.length ? chartData : [{ name: 'Current Month', revenue: 0 }],
+      products,
+      auctions
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

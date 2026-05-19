@@ -57,7 +57,7 @@ function AdminDashboard() {
           </div>
           <div>
             <div style={{ color: 'var(--color-text)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Global Revenue</div>
-            <div style={{ fontSize: '2rem', fontWeight: '800', color: 'white' }}>${metrics.totalRevenue}</div>
+            <div style={{ fontSize: '2rem', fontWeight: '800', color: 'white' }}>BD {metrics.totalRevenue}</div>
           </div>
         </div>
         <div className="glass-panel" style={{ padding: '24px', display: 'flex', alignItems: 'center', gap: '16px' }}>

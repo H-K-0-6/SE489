@@ -94,7 +94,7 @@ function CustomerDashboard() {
                     <div style={{ color: 'var(--color-text)', fontSize: '0.9rem', marginTop: '4px' }}>Placed on {new Date(order.createdAt).toLocaleDateString()}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--color-directory)' }}>${order.total.toFixed(2)}</div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--color-directory)' }}>BD {order.total.toFixed(2)}</div>
                     <a href="#" style={{ fontSize: '0.8rem', textDecoration: 'underline' }}>View Tax Invoice (PDF)</a>
                   </div>
                 </div>
@@ -140,13 +140,13 @@ function CustomerDashboard() {
                     )}
                     {isOutbid && (
                       <div style={{ color: 'var(--color-featured)', fontSize: '0.85rem', marginTop: '4px' }}>
-                        You have been outbid! Current high bid: ${bid.auction.currentBid}
+                        You have been outbid! Current high bid: BD {bid.auction.currentBid}
                       </div>
                     )}
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: '0.8rem', color: 'var(--color-text)', textTransform: 'uppercase' }}>Your Bid</div>
-                    <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: isWinner ? '#4CAF50' : 'white' }}>${bid.amount}</div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: isWinner ? '#4CAF50' : 'white' }}>BD {bid.amount}</div>
                     <div style={{ fontSize: '0.8rem', padding: '4px 8px', borderRadius: '4px', background: 'var(--glass-bg)', display: 'inline-block', marginTop: '8px' }}>
                       {bid.auction.status}
                     </div>
@@ -174,7 +174,7 @@ function CustomerDashboard() {
                   <h3 className="card-title">{item.name}</h3>
                   <div style={{ color: 'var(--color-text)', fontSize: '0.9rem', marginBottom: '16px' }}>By {item.artisan}</div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                    <div className="card-price" style={{ margin: 0 }}>${item.price}</div>
+                    <div className="card-price" style={{ margin: 0 }}>BD {item.price}</div>
                     <button className="btn btn-outline" style={{ padding: '0.5rem 1rem' }}>Add to Cart</button>
                   </div>
                 </div>

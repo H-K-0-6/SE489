@@ -85,7 +85,7 @@ function Cart() {
                   <div style={{ flexGrow: 1 }}>
                     <h3 style={{ margin: '0 0 4px 0', fontSize: '1.2rem' }}>{item.product.name}</h3>
                     <div style={{ color: 'var(--color-text)', fontSize: '0.9rem' }}>Category: {item.product.category}</div>
-                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--color-directory)', marginTop: '8px' }}>${item.product.price}</div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--color-directory)', marginTop: '8px' }}>BD {item.product.price}</div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <span style={{ fontWeight: 'bold' }}>Qty: {item.quantity}</span>
@@ -104,16 +104,16 @@ function Cart() {
               
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', color: 'var(--color-text)' }}>
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>BD {subtotal.toFixed(2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', color: 'var(--color-text)' }}>
                 <span>Tax (5%)</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>BD {tax.toFixed(2)}</span>
               </div>
               <div style={{ height: '1px', background: 'var(--glass-border)', margin: '20px 0' }}></div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px', fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>
                 <span>Total</span>
-                <span style={{ color: 'var(--color-directory)' }}>${total.toFixed(2)}</span>
+                <span style={{ color: 'var(--color-directory)' }}>BD {total.toFixed(2)}</span>
               </div>
               
               <button onClick={handleCheckout} className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', marginBottom: '16px' }}>

@@ -151,7 +151,7 @@ function AuctionDetails() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '20px' }}>
               <div>
                 <div style={{ fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--color-text)', letterSpacing: '1px' }}>Current Bid</div>
-                <div style={{ fontSize: '3rem', fontWeight: '800', fontFamily: 'Playfair Display', color: 'var(--color-directory)', lineHeight: 1 }}>${auction.currentBid}</div>
+                <div style={{ fontSize: '3rem', fontWeight: '800', fontFamily: 'Playfair Display', color: 'var(--color-directory)', lineHeight: 1 }}>BD {auction.currentBid}</div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--color-text)', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end' }}><Clock size={16} /> Time Left</div>

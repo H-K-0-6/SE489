@@ -94,7 +94,7 @@ function Wishlist() {
                 <div className="card-body">
                   <div className="card-category">{product.category}</div>
                   <h3 className="card-title">{product.name}</h3>
-                  <div className="card-price" style={{ margin: '12px 0' }}>${product.price}</div>
+                  <div className="card-price" style={{ margin: '12px 0' }}>BD {product.price}</div>
                   
                   <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
                     <button 

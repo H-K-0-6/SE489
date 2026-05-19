@@ -15,6 +15,7 @@ import Wishlist from './pages/Wishlist'
 import ProductDetails from './pages/ProductDetails'
 import AuctionDetails from './pages/AuctionDetails'
 import ArtisansList from './pages/ArtisansList'
+import ResetPassword from './pages/ResetPassword'
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
@@ -40,6 +41,7 @@ function AppRoutes() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/wishlist" element={
           <ProtectedRoute allowedRoles={['CUSTOMER', 'ARTISAN', 'ADMIN']}>
             <Wishlist />
