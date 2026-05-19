@@ -5,6 +5,17 @@ const prisma = new PrismaClient();
 // Realistically, this would be in Redis.
 const auctionState = {};
 
+// Helper function to safely send JSON messages to a WebSocket client
+function sendToSocket(socket, payload) {
+  try {
+    if (socket && socket.readyState === 1) { // 1 is WebSocket.OPEN
+      socket.send(JSON.stringify(payload));
+    }
+  } catch (err) {
+    console.error("Socket send failed:", err.message);
+  }
+}
+
 function handleWebSocketConnection(wss) {
   wss.on('connection', (ws) => {
     console.log('New client connected');
@@ -20,12 +31,12 @@ function handleWebSocketConnection(wss) {
             where: { id: data.auctionId }
           });
           if (currentAuction) {
-            ws.send(JSON.stringify({
+            sendToSocket(ws, {
               type: 'UPDATE',
               auctionId: currentAuction.id,
               currentBid: currentAuction.currentBid,
               status: currentAuction.status
-            }));
+            });
           }
         }
 
@@ -35,15 +46,15 @@ function handleWebSocketConnection(wss) {
           // Validation
           const auction = await prisma.auction.findUnique({ where: { id: auctionId } });
           if (!auction || auction.status !== 'ACTIVE') {
-            ws.send(JSON.stringify({ type: 'ERROR', message: 'Auction not active' }));
+            sendToSocket(ws, { type: 'ERROR', message: 'Auction not active' });
             return;
           }
           if (auction.artisanId === userId) {
-            ws.send(JSON.stringify({ type: 'ERROR', message: 'Shill bidding is not allowed' }));
+            sendToSocket(ws, { type: 'ERROR', message: 'Shill bidding is not allowed' });
             return;
           }
           if (amount <= auction.currentBid) {
-            ws.send(JSON.stringify({ type: 'ERROR', message: 'Bid must be higher than current bid' }));
+            sendToSocket(ws, { type: 'ERROR', message: 'Bid must be higher than current bid' });
             return;
           }
 
@@ -63,18 +74,16 @@ function handleWebSocketConnection(wss) {
 
           // Broadcast to all clients
           wss.clients.forEach(client => {
-            if (client.readyState === 1) {
-              client.send(JSON.stringify({
-                type: 'UPDATE',
-                auctionId,
-                currentBid: amount
-              }));
-            }
+            sendToSocket(client, {
+              type: 'UPDATE',
+              auctionId,
+              currentBid: amount
+            });
           });
         }
       } catch (err) {
         console.error("WebSocket Error:", err.message);
-        ws.send(JSON.stringify({ type: 'ERROR', message: err.message }));
+        sendToSocket(ws, { type: 'ERROR', message: err.message });
       }
     });
 
@@ -83,27 +92,33 @@ function handleWebSocketConnection(wss) {
     });
   });
 
-  // 500ms broadcast loop to refresh current highest bid
-  // (Optional, as we also push updates instantly on bid)
+  // 5 seconds broadcast loop to refresh current highest bid
+  // Wrapped in try/catch with active state checking to prevent crashes
   setInterval(async () => {
-    const activeClients = Array.from(wss.clients).filter(c => c.readyState === 1);
-    if (activeClients.length === 0) return;
+    try {
+      const activeClients = Array.from(wss.clients).filter(c => c.readyState === 1);
+      if (activeClients.length === 0) return;
 
-    const activeAuctions = await prisma.auction.findMany({
-      where: { status: 'ACTIVE' }
-    });
-
-    activeClients.forEach(client => {
-      activeAuctions.forEach(auction => {
-        client.send(JSON.stringify({
-          type: 'UPDATE',
-          auctionId: auction.id,
-          currentBid: auction.currentBid,
-          status: auction.status
-        }));
+      const activeAuctions = await prisma.auction.findMany({
+        where: { status: 'ACTIVE' }
       });
-    });
-  }, 5000); // 500ms is too aggressive, use 5 seconds for periodic sync
+
+      activeClients.forEach(client => {
+        if (client.readyState === 1) {
+          activeAuctions.forEach(auction => {
+            sendToSocket(client, {
+              type: 'UPDATE',
+              auctionId: auction.id,
+              currentBid: auction.currentBid,
+              status: auction.status
+            });
+          });
+        }
+      });
+    } catch (err) {
+      console.error("Error in periodic sync loop:", err.message);
+    }
+  }, 5000); // 5 seconds for periodic sync
 }
 
 module.exports = { handleWebSocketConnection };

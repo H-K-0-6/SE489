@@ -141,7 +141,14 @@ function AuctionHouse() {
     }
     fetch(url)
       .then(res => res.json())
-      .then(data => setAuctions(data))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setAuctions(data);
+        } else {
+          console.error("Expected array from auctions endpoint, received:", data);
+          setAuctions([]);
+        }
+      })
       .catch(err => console.error(err))
   }, [searchQuery])
 
@@ -151,13 +158,20 @@ function AuctionHouse() {
     wsRef.current.onopen = () => console.log('Connected to WebSocket server')
 
     wsRef.current.onmessage = (event) => {
-      const data = JSON.parse(event.data)
-      if (data.type === 'UPDATE') {
-        setAuctions(prev => prev.map(a =>
-          a.id === data.auctionId ? { ...a, currentBid: data.currentBid, status: data.status || a.status } : a
-        ))
+      try {
+        const data = JSON.parse(event.data)
+        if (data.type === 'UPDATE') {
+          setAuctions(prev => {
+            if (!Array.isArray(prev)) return [];
+            return prev.map(a =>
+              a.id === data.auctionId ? { ...a, currentBid: data.currentBid, status: data.status || a.status } : a
+            );
+          });
+        }
+        if (data.type === 'ERROR') alert(data.message)
+      } catch (err) {
+        console.error("Failed to parse websocket message:", err);
       }
-      if (data.type === 'ERROR') alert(data.message)
     }
 
     return () => { if (wsRef.current) wsRef.current.close() }
@@ -200,7 +214,7 @@ function AuctionHouse() {
     setShowDropdown(false);
   }
 
-  const categories = [...new Set(auctions.map(a => a.category))];
+  const categories = Array.isArray(auctions) ? [...new Set(auctions.map(a => a.category))] : [];
   const categorySuggestions = searchInput.length > 0 
     ? categories.filter(cat => cat.toLowerCase().includes(searchInput.toLowerCase())).slice(0, 3)
     : [];
@@ -310,8 +324,9 @@ function AuctionHouse() {
         </div>
       </div>
 
-      <div className={auctions.filter(auction => new Date(auction.endTime) > new Date() && auction.status === 'ACTIVE').length > 0 ? "grid" : ""}>
+      <div className={Array.isArray(auctions) && auctions.filter(auction => new Date(auction.endTime) > new Date() && auction.status === 'ACTIVE').length > 0 ? "grid" : ""}>
         {(() => {
+          if (!Array.isArray(auctions)) return <div style={{ color: 'var(--color-text)', textAlign: 'center' }}>Loading auctions...</div>;
           const filtered = auctions.filter(auction => new Date(auction.endTime) > new Date() && auction.status === 'ACTIVE');
           if (filtered.length === 0) {
             return (

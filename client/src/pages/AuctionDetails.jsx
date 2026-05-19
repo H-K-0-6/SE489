@@ -53,11 +53,18 @@ function AuctionDetails() {
     // WebSocket connection for live bids
     wsRef.current = new WebSocket('ws://localhost:3001');
     wsRef.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'UPDATE' && data.auctionId === id) {
-        setAuction(prev => ({ ...prev, currentBid: data.currentBid, status: data.status || prev.status }));
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'UPDATE' && data.auctionId === id) {
+          setAuction(prev => {
+            if (!prev) return null;
+            return { ...prev, currentBid: data.currentBid, status: data.status || prev.status };
+          });
+        }
+        if (data.type === 'ERROR') alert(data.message);
+      } catch (err) {
+        console.error("Failed to parse websocket message:", err);
       }
-      if (data.type === 'ERROR') alert(data.message);
     };
 
     return () => { if (wsRef.current) wsRef.current.close(); };
