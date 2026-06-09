@@ -106,7 +106,8 @@ npm install
 ---
 
 ## ▶️ Running the App
-
+First option: you can use the .bat file to launch everything
+Alternative option:
 You need **two terminals** running simultaneously — one for the server and one for the client.
 
 ### Terminal 1 — Start the Backend Server
